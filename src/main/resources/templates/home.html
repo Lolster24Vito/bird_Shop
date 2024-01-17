@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Bird shop</title>
+  <link rel="stylesheet" th:href="@{/css/table.css}"/>
+
+</head>
+
+<body>
+<h1>Welcome to bird shop</h1>
+
+
+<table>
+  <thead>
+  <tr>
+    <th> ID </th>
+    <th> Name </th>
+    <th>Can fly</th>
+    <th> Price </th>
+    <th> Description </th>
+    <th> Tags </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:if="${birds.empty}">
+    <td colspan="2"> No Birds  Available </td>
+  </tr>
+  <tr th:each="bird : ${birds}">
+    <td><span th:text="${bird.id}"> ID </span></td>
+    <td><span th:text="${bird.name}"> Name </span></td>
+    <td><span th:text="${bird.canFly}"> Can fly </span></td>
+    <td><span th:text="${bird.price}"> Price </span></td>
+    <td><span th:text="${bird.description}"> Description </span></td>
+    <td>
+      <!-- Display tags using th:each -->
+      <span th:each="tag, iterationStatus : ${bird.birdTags}">
+          <span th:text="${tag.name}"></span>
+          <span th:if="${!iterationStatus.last}">, </span>
+        </span>    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
