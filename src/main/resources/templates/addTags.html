@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <title>Bird shop add Tags</title>
+
+</head>
+
+<body>
+<h1>Welcome to bird shop</h1>
+<h3>ADD NEW TAGS NOW:? </h3>
+<label for="tagDiv">Bird tags:</label>
+<div id="tagDiv">
+  <th:block th:each="tag:${birdTags}">
+    <input type="checkbox" th:field="*{birdTags}" th:text="${tag.name}" th:value="${tag.id}">
+  </th:block>
+</div>
+<p>   <a th:href="@{/}">Go back to home page</a>
+</p>
+<div style="border: solid 3px cadetblue">
+  <form method="post" th:object="${createTag}" th:action="@{/saveNewTag}">
+    <div th:if="${#fields.hasErrors()}">
+      <p th:each="error : ${#fields.allErrors()}" th:text="${error}"></p>
+    </div><
+    <label for="name">Name: </label>
+    <input type="text" name="createBird.name" th:field="*{name}" placeholder="Name" id="name"/>
+
+    <button type="submit">Save new Bird tags</button>
+
+  </form>
+</div>
+
+
+</body>
+</html>

@@ -1,6 +1,10 @@
 package hr.algebra.bird_shop.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +22,13 @@ public class Bird {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Date createdAt=new Date();
-  //  @NotNull validation will be done after database stuff
-    private String name;
+  @NotBlank(message = "Bird name must not be empty!")
+  private String name;
+    @NotBlank(message = "Bird description must not be empty!")
     private String description;
     private Boolean canFly;
+    @NotNull(message = "Price must not be left empty")
+    @Min(value = 0,message = "Bird prices should be higher than 0")
     private BigDecimal price;
     @ManyToMany
     private List<BirdTag> birdTags;
