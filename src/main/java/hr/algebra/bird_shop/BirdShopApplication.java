@@ -2,17 +2,18 @@ package hr.algebra.bird_shop;
 
 import hr.algebra.bird_shop.domain.Bird;
 import hr.algebra.bird_shop.domain.BirdTag;
+import hr.algebra.bird_shop.domain.BirdUser;
 import hr.algebra.bird_shop.repository.BirdRepository;
 import hr.algebra.bird_shop.repository.BirdTagRepository;
+import hr.algebra.bird_shop.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 @SpringBootApplication
 public class BirdShopApplication {
@@ -22,7 +23,7 @@ public class BirdShopApplication {
     }
 
     @Bean
-    CommandLineRunner dataLoader(BirdRepository birdRepo, BirdTagRepository birdTagRepo){
+    CommandLineRunner dataLoader(BirdRepository birdRepo, BirdTagRepository birdTagRepo, UserRepository userRepo, PasswordEncoder passwordEncoder){
         return args -> {
             //To ensure that BirdTags are also inserted along with Birds I'm creating BirdTagsFirst
             BirdTag tag1 = birdTagRepo.save(new BirdTag("sharp talons"));
@@ -40,6 +41,13 @@ public class BirdShopApplication {
                     Arrays.asList(tag3,tag2)));
             birdRepo.save(new Bird("Ptica","pticos around",true,BigDecimal.valueOf(4.99),
                     Arrays.asList(tag1,tag3)));
+            BirdUser birdUser=new BirdUser("s",passwordEncoder.encode("d"),"f");
+            BirdUser birdUser1=new BirdUser("f",passwordEncoder.encode("d"),"s");
+
+            userRepo.save(birdUser);
+            userRepo.save(birdUser1);
+            Iterable<BirdUser> all = userRepo.findAll();
+            System.out.println("yup im here");
 
 
         };

@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,10 +42,15 @@ public class BirdShopController {
     private final BirdTagRepository birdTagRepository;
 
     @GetMapping({"/", "home"})
-    public String home(Model model,HttpServletRequest request){
+    public String home(Authentication authentication,Model model, HttpServletRequest request){
         //addHomePageBirdAttributes(model);
        // model.addAttribute("createBird",new Bird());
        // model.addAttribute("cookieCart",getCookieCart(request));
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Add the authentication object to the model if needed
+            model.addAttribute("authentication", authentication);
+        }
+        System.out.println("tt");
         return "home";
     }
     @ModelAttribute

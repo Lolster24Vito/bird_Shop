@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" >
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <head>
   <title>Bird shop</title>
   <link rel="stylesheet" th:href="@{/css/table.css}"/>
@@ -9,6 +11,10 @@
 
 <body>
 <h1>Welcome to bird shop</h1>
+
+<h3 th:inline="text">
+  user: <span th:if="${authentication != null}" th:text="${authentication.principal.username}">not found</span>
+</h3>
 
 <!-- bird items table -->
 <table>
