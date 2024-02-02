@@ -6,9 +6,26 @@
 </head>
 <body>
 <h1>Register</h1>
-<form method="post" th:action="@{register}" id="registerForm">
+<a th:href="@{/}">Want to return to the home?</a>
+<p>Already registered? Click <a th:href="@{/login}">here</a> to login.</p>
+
+<!--
+  <form method="post" th:object="${createBird}" th:action="@{/saveNewBird}">
+    <div th:if="${#fields.hasErrors()}">
+      <p th:each="error : ${#fields.errors()}" th:text="${error}"></p>
+
+    </div>
+-->
+<form method="post" th:object="${createBirdUser}" th:action="@{register}" id="registerForm">
+  <div th:if="${#fields.hasErrors()}">
+    <p th:each="error : ${#fields.errors()}" th:text="${error}"></p>
+
+  </div>
   <label th:for="username">Username: </label>
   <input type="text" name="username"/><br/>
+
+  <label th:for="email">Email: </label>
+  <input type="text" name="email"/><br/>
 
   <label th:for="password">Password: </label>
   <input type="password" name="password"/><br/>
@@ -16,27 +33,8 @@
   <label th:for="confirm">Confirm password: </label>
   <input type="password" name="confirm"/><br/>
 
-
-  <label th:for="fullname">Full name: </label>
-  <input type="text" name="fullname"/><br/>
-
-  <label th:for="street">street: </label>
-  <input type="text" name="street"/><br/>
-
-  <label th:for="city">city: </label>
-  <input type="text" name="city"/><br/>
-
-  <label th:for="state">State: </label>
-  <input type="text" name="state"/><br/>
-
-
-
-  <label th:for="zip">zip: </label>
-  <input type="text" name="zip"/><br/>
-
-  <label th:for="phone">Phone: </label>
-  <input type="text" name="phone"/><br/>
-
+  <label th:for="description">Describe yourself regarding birds: </label>
+  <input type="text" name="description"/><br/>
 
   <input type="submit" value="Register"/>
 

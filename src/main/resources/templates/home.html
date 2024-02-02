@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>Bird shop</title>
   <link rel="stylesheet" th:href="@{/css/table.css}"/>
@@ -11,10 +10,32 @@
 
 <body>
 <h1>Welcome to bird shop</h1>
-
+<p>
+  <a th:href="@{/login}">Login</a>
+</p>
+<p>
+  <a th:href="@{/register}">Register</a>
+</p>
 <h3 th:inline="text">
   user: <span th:if="${authentication != null}" th:text="${authentication.principal.username}">not found</span>
 </h3>
+
+<div sec:authorize="hasAuthority('ROLE_ADMIN')">
+  <h3>I am admin</h3>
+</div>
+<div sec:authorize="hasAuthority('ROLE_USER')">
+  <h3>I am USER man</h3>
+</div>
+
+<div th:if="${authentication==null}">
+  <h3>I am anon now</h3>
+</div>
+<!-- Check if the user is authenticated and display the logout button -->
+<div th:if="${authentication != null}">
+  <form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+  </form>
+</div>
 
 <!-- bird items table -->
 <table>

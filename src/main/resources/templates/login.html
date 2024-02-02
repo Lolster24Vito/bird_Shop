@@ -8,10 +8,9 @@
 <body>
 <h1>Login</h1>
 
+<a th:href="@{/}">Want to return to the home?</a>
+<p>New here? Click <a th:href="@{/register}">here</a> to register.</p>
 
-<p>New here? Click
-  <!-- <a th:href="@{/register}">here</a> to register.</p>
-  -->
 
 <!-- tag::thAction[] -->
 <form method="POST" th:action="@{/login}" id="loginForm">

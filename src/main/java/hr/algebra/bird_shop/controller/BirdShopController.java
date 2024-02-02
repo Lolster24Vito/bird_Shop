@@ -50,7 +50,6 @@ public class BirdShopController {
             // Add the authentication object to the model if needed
             model.addAttribute("authentication", authentication);
         }
-        System.out.println("tt");
         return "home";
     }
     @ModelAttribute

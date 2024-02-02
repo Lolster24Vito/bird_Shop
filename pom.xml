@@ -68,6 +68,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <!-- <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+        and similar functions like hasRole doesn't work without this dependency-->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+            <version>3.1.2.RELEASE</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>

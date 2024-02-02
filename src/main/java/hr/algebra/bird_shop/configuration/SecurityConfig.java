@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -27,11 +29,19 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/adminPage").hasRole("ADMIN")
-                        .requestMatchers("/userPage").hasRole("USER")
+                        .requestMatchers("/userPage").hasAnyRole("USER","ADMIN")
+                        .requestMatchers(toH2Console()).permitAll()
                         .anyRequest().permitAll()
 
                 ).formLogin(formLogin->
-                        formLogin.loginPage("/login"));
+                        formLogin.loginPage("/login"))
+                .logout(logout ->
+                        logout.logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                )
+                //this whole line and .requestMatchers(toH2Console() is purely  for opening h2Console because by default it's blocked
+                .csrf(csrf->csrf.disable()).headers(headers->headers.frameOptions(frameOptions->frameOptions.disable()))
+                ;
 
         return http.build();
     }
