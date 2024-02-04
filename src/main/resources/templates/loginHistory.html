@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Bird shop</title>
+  <link rel="stylesheet" th:href="@{/css/table.css}"/>
+
+</head>
+
+<body>
+<h1>Only admin should see this page</h1>
+
+<a th:href="@{/}">Want to return to the home?</a>
+
+
+<table>
+  <thead>
+  <tr>
+    <th> ID </th>
+    <th> Username </th>
+    <th> Ip Address</th>
+    <th> Login time </th>
+
+
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr th:each="li : ${loginInfos}">
+    <td><span th:text="${li.id}"> ID </span></td>
+    <td><span th:text="${li.username}"> Username </span></td>
+    <td><span th:text="${li.ipAddress}"> Can fly </span></td>
+    <td><span th:text="${li.loginTime}"> Login Time </span></td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
+<!-- end::all[] -->
