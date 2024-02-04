@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+
+</head>
+
+<body>
+<h1>Only admin should see this page</h1>
+
+<a th:href="@{/}">Want to return to the home?</a>
+<h1>Order admin payment history:</h1>
+<form method="get" th:action="@{/admin/paymentHistory}" >
+    <input name="searchUser" placeholder="Find by Username" th:value="${searchUser}" type="text">
+    <button class="btn btn-info" type="submit">Search by username</button>
+    <br/>
+    <label for="startDate">Start Date:</label>
+    <input id="startDate" name="startDate" type="datetime-local" th:value="${startDate}">
+    <label for="endDate">End Date:</label>
+    <input  id="endDate" name="endDate" type="datetime-local" th:value="${endDate}" placeholder="End Date and Time">
+    <button class="btn btn-info" type="submit">Search by date</button>
+</form>
+<div id="orders">
+    <br/>
+    <div class="order" th:each="order:${orders}">
+
+        <h3>Order number: <span th:text="${order.id}">2</span></h3>
+        <p>Order time and date:<span th:text="${order.createdTime}">123</span></p>
+        <p>Payment type:<span th:text="${order.orderPayType.toString()}">123</span></p>
+        <p>Payment total:<span th:text="${order.total}">123</span></p>
+        <p>Order shipping address:<span th:text="${order.birdUserShippingAddress}">123</span></p>
+        <p>Order ip address:<span th:text="${order.ipAddress}">123</span></p>
+        <p>Order user username:<span th:text="${order.birdUser.username}">123</span></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th> Name </th>
+                <th> Price </th>
+                <th> Quantity </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="ci : ${order.birdShopItems}">
+                <td><span th:text="${ci.birdProduct.name}"> Name </span></td>
+                <td><span th:text="${ci.birdProduct.price}"> Price </span></td>
+                <td><span th:text="${ci.quantity}"> Quantity </span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

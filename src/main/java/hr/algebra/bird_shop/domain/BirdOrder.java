@@ -26,16 +26,21 @@ public class BirdOrder {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "BIRD_USER_ID")
     private BirdUser birdUser;
+
+
     //User
     private String birdUserShippingAddress;
+    private String ipAddress;
     private BigDecimal total;
 
-    public BirdOrder(List<BirdShopItem> birdShopItems,BigDecimal total,LocalDateTime createdTime, OrderPayType orderPayType, BirdUser birdUser, String birdUserShippingAddress) {
+    public BirdOrder(List<BirdShopItem> birdShopItems,BigDecimal total,LocalDateTime createdTime,
+                     OrderPayType orderPayType, BirdUser birdUser, String birdUserShippingAddress,String ipAddress) {
         this.birdShopItems = birdShopItems;
         this.total=total;
         this.createdTime = createdTime;
         this.orderPayType = orderPayType;
         this.birdUser = birdUser;
         this.birdUserShippingAddress = birdUserShippingAddress;
+        this.ipAddress=ipAddress;
     }
 }

@@ -17,12 +17,16 @@
   <a th:href="@{/register}">Register</a>
 </p>
 <h3 th:inline="text">
-  user: <span th:if="${authentication != null}" th:text="${authentication.principal.username}">not found</span>
+  <span th:if="${authentication != null}">User:
+        <span  th:text="${authentication.principal.username}">not found</span>
+  </span>
+
 </h3>
 
 <div sec:authorize="hasAuthority('ROLE_ADMIN')">
   <h3>I am admin</h3>
   <a th:href="@{/admin/loginHistory}">Logins information</a>
+  <a th:href="@{/admin/paymentHistory}">Payment history</a>
 
 </div>
 <div sec:authorize="hasAuthority('ROLE_USER')">
@@ -39,7 +43,14 @@
     <button type="submit">Logout</button>
   </form>
 </div>
+<h4>All categories:
+<th:block th:each="tag,iterationStatus:${birdTags}">
+  <span th:text="${tag.name}"> </span>
+  <span th:if="${!iterationStatus.last}">, </span>
+  <span th:if="${iterationStatus.last}">. </span>
 
+</th:block>
+  </h4>
 <!-- bird items table -->
 <table>
   <thead>

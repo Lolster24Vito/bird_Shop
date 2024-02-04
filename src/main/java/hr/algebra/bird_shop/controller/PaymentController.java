@@ -17,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,7 +35,6 @@ public class PaymentController {
     @GetMapping("/payment")
     public String paymentPage(Model model, HttpServletRequest request){
         Cart cart=cookieCartUtil.getCookieCart(request);
-        BigDecimal total = cart.getTotal();
         model.addAttribute("totalSum",cart.getTotal().toString());
         model.addAttribute("cart",cart);
         return "payment";
@@ -61,9 +62,15 @@ public String handleSuccessCashDelivery(HttpServletRequest request, HttpServletR
         Cart cart = cookieCartUtil.getCookieCart(request);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         BirdUser birdUser = userRepository.findByUsername(authentication.getName());
+        String ipAddress=getIpAddress();
         BirdOrder birdOrder = new BirdOrder(cart.getItems(),cart.getTotal(), LocalDateTime.now(), orderPayType,
-                birdUser, birdUser.getShippingAddress());
+                birdUser, birdUser.getShippingAddress(),ipAddress);
         birdOrderRepository.save(birdOrder);
+    }
+    private String getIpAddress() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        return request.getRemoteAddr();
     }
 
     @GetMapping("/payment/cancelMessage")
