@@ -37,6 +37,7 @@ public class Cart {
                 item.setQuantity(originalQuantity-itemToFind.getQuantity());
             }
         }
+        getTotal();
     }
     public void addItem(BirdShopItem addItem){
         BirdShopItem item=getItem(addItem.getBirdProduct());
@@ -47,6 +48,7 @@ public class Cart {
         else{
             items.add(addItem);
         }
+        getTotal();
     }
 
     public void removeItem(Bird removeBird){ // throws ProductNotFoundException
@@ -55,13 +57,14 @@ public class Cart {
         if (item != null){
             items.remove(item);
         }
+        getTotal();
     }
 
 
     public BigDecimal getTotal() {
         total = BigDecimal.ZERO;
         for (BirdShopItem item : items) {
-            total.add(item.getSumTotal());
+           total=total.add(item.getSumTotal());
         }
         return total;
     }

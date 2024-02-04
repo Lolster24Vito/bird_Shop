@@ -28,17 +28,22 @@ public class BirdUser implements UserDetails {
     @Email(message = "Not valid email")
     private String email;
     private String description;
-
+    private String shippingAddress;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles ;
 
-    public BirdUser(String username, String password, String description,String email,
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "birdUser")
+    private List<BirdOrder> userBirdOrders;
+
+    public BirdUser(String username, String password, String description,String email,String shippingAddress,
                     Set<Role> roles) {
-        this.roles=roles;
         this.username = username;
         this.password = password;
         this.email=email;
         this.description = description;
+        this.shippingAddress=shippingAddress;
+        this.roles=roles;
+
     }
 
     @Override

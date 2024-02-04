@@ -25,6 +25,7 @@
 </div>
 <div sec:authorize="hasAuthority('ROLE_USER')">
   <h3>I am USER man</h3>
+  <a th:href="@{/userDetails}">I want to look at my user details and orders MAN</a>
 </div>
 
 <div th:if="${authentication==null}">
@@ -116,6 +117,11 @@
 
 <!--  Cart table-->
 <h4>Cart:</h4>
+<h5>Cart sum:<span th:text="${cookieCart.total}"></span></h5>
+<form th:action="@{/removeEverythingFromCart}" method="post">
+  <button type="submit">Remove everything from cart</button>
+</form>
+
 <table>
   <thead>
   <tr>
@@ -155,6 +161,7 @@
   </tr>
   </tbody>
 </table>
+<a th:href="@{/payment}">Pay now</a>
 
 </body>
 </html>

@@ -54,12 +54,12 @@ public class BirdShopApplication {
 
 
             BirdUser birdUser=new BirdUser("s",passwordEncoder.encode("d"),"f",
-                    "s@gmail.com",new HashSet<>(Arrays.asList(roleUser ))     );
+                    "s@gmail.com","Zadar",new HashSet<>(Arrays.asList(roleUser ))     );
             BirdUser birdUser1=new BirdUser("f",passwordEncoder.encode("d"),"s",
-                    "f@gmail.com",new HashSet<>(Arrays.asList(roleUser)) );
+                    "f@gmail.com","Ferovac",new HashSet<>(Arrays.asList(roleUser)) );
 
             BirdUser birdUser2=new BirdUser("admin",passwordEncoder.encode("admin"),"I am mr admin",
-                    "admin@gmail.com",new HashSet<>(Arrays.asList(roleAdmin)) );
+                    "admin@gmail.com","Zagreb",new HashSet<>(Arrays.asList(roleAdmin)) );
             userRepo.save(birdUser);
             userRepo.save(birdUser1);
             userRepo.save(birdUser2);

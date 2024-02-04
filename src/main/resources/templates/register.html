@@ -9,13 +9,7 @@
 <a th:href="@{/}">Want to return to the home?</a>
 <p>Already registered? Click <a th:href="@{/login}">here</a> to login.</p>
 
-<!--
-  <form method="post" th:object="${createBird}" th:action="@{/saveNewBird}">
-    <div th:if="${#fields.hasErrors()}">
-      <p th:each="error : ${#fields.errors()}" th:text="${error}"></p>
 
-    </div>
--->
 <form method="post" th:object="${createBirdUser}" th:action="@{register}" id="registerForm">
   <div th:if="${#fields.hasErrors()}">
     <p th:each="error : ${#fields.errors()}" th:text="${error}"></p>
@@ -35,6 +29,9 @@
 
   <label th:for="description">Describe yourself regarding birds: </label>
   <input type="text" name="description"/><br/>
+
+  <label th:for="shippingAddress">Shipping address where to mail your birds: </label>
+  <input type="text" name="shippingAddress"/><br/>
 
   <input type="submit" value="Register"/>
 

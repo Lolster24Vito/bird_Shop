@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Bird shop</title>
+  <link rel="stylesheet" th:href="@{/css/table.css}"/>
+
+</head>
+
+<body>
+<h1>User order history:</h1>
+<div id="orders">
+<br/>
+  <div class="order" th:each="order:${orders}">
+
+  <h3>Order number: <span th:text="${order.id}">2</span></h3>
+  <p>Order time and date:<span th:text="${order.createdTime}">123</span>
+    <p>Payment type:<span th:text="${order.orderPayType.toString()}">123</span>
+    <p>Payment total:<span th:text="${order.total}">123</span>
+    <p>Order shipping address:<span th:text="${order.birdUserShippingAddress}">123</span>
+    <table>
+    <thead>
+    <tr>
+      <th> Name </th>
+      <th> Price </th>
+      <th> Quantity </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="ci : ${order.birdShopItems}">
+      <td><span th:text="${ci.birdProduct.name}"> Name </span></td>
+      <td><span th:text="${ci.birdProduct.price}"> Price </span></td>
+      <td><span th:text="${ci.quantity}"> Quantity </span></td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+
+</div>
+
+</body>
+</html>
+<!-- end::all[] -->
