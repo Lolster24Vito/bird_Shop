@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Bird shop</title>
+  <link rel="stylesheet" th:href="@{/css/table.css}"/>
+
+</head>
+
+<body>
+<h1>Welcome to bird shop admin PAGE!</h1>
+
+<p>   <a th:href="@{/}">Go back to home page</a>
+
+
+<div sec:authorize="hasAuthority('ROLE_ADMIN')">
+  <h3>I am admin</h3>
+  <a th:href="@{/admin/loginHistory}">Logins information</a>
+  <a th:href="@{/admin/paymentHistory}">Payment history</a>
+</div>
+<table>
+  <thead>
+  <tr>
+    <th> ID </th>
+    <th> Name </th>
+    <th>Can fly</th>
+    <th> Price </th>
+    <th> Description </th>
+    <th> Tags </th>
+
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr th:each="bird : ${birds}">
+    <td><span th:text="${bird.id}"> ID </span></td>
+    <td><span th:text="${bird.name}"> Name </span></td>
+    <td><span th:text="${bird.canFly}"> Can fly </span></td>
+    <td><span th:text="${bird.price}"> Price </span></td>
+    <td><span th:text="${bird.description}"> Description </span></td>
+
+    <td>
+      <!-- Display tags using th:each -->
+      <span th:each="tag, iterationStatus : ${bird.birdTags}">
+          <span th:text="${tag.name}"></span>
+          <span th:if="${!iterationStatus.last}">, </span>
+        </span>    </td>
+
+
+  </tr>
+  </tbody>
+</table>
+
+
+<div style="border: solid 3px cadetblue">
+
+
+<!-- create bird form -->
+  <form method="post" th:object="${createBird}" th:action="@{/admin/saveNewBird}">
+    <div th:if="${#fields.hasErrors()}">
+      <p th:each="error : ${#fields.errors()}" th:text="${error}"></p>
+
+    </div>
+
+
+  <label for="name">Name: </label>
+  <input type="text" name="createBird.name" th:field="*{name}" placeholder="Name" id="name"/>
+
+  <label for="description">Description: </label>
+  <textarea style="resize: none" rows="5"  name="createBird.description" th:field="*{description}" id="description"
+            placeholder="Description"></textarea>
+
+  <label for="canFly">Can fly: </label>
+  <input type="checkbox" th:field="*{canFly}" th:checked="false" name="createBird.canFly" id="canFly"/>
+  <label for="price">Price: </label>
+  <input type="number" step="0.01" value="1" th:field="*{price}" name="createBird.price" id="price" placeholder="1.0" min="0" >
+  </br>
+    <label for="tagDiv">Bird tags:</label>
+    <div id="tagDiv">
+      <th:block th:each="tag:${birdTags}">
+        <input type="checkbox" th:field="*{birdTags}" th:text="${tag.name}" th:value="${tag.id}">
+      </th:block>
+    </div>
+  </br>
+  <a th:href="@{/admin/addTags}">Add new Tags</a>
+  <button type="submit">Save new Bird</button>
+
+  </form>
+</div>
+
+</body>
+</html>

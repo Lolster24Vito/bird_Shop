@@ -27,8 +27,10 @@
   <h3>I am admin</h3>
   <a th:href="@{/admin/loginHistory}">Logins information</a>
   <a th:href="@{/admin/paymentHistory}">Payment history</a>
+  <a th:href="@{/admin/home}">Add new birds or tags</a>
 
 </div>
+
 <div sec:authorize="hasAuthority('ROLE_USER')">
   <h3>I am USER man</h3>
   <a th:href="@{/userDetails}">I want to look at my user details and orders MAN</a>
@@ -92,41 +94,7 @@
   </tbody>
 </table>
 
-<div style="border: solid 3px cadetblue">
 
-
-<!-- create bird form -->
-  <form method="post" th:object="${createBird}" th:action="@{/saveNewBird}">
-    <div th:if="${#fields.hasErrors()}">
-      <p th:each="error : ${#fields.errors()}" th:text="${error}"></p>
-
-    </div>
-
-
-  <label for="name">Name: </label>
-  <input type="text" name="createBird.name" th:field="*{name}" placeholder="Name" id="name"/>
-
-  <label for="description">Description: </label>
-  <textarea style="resize: none" rows="5"  name="createBird.description" th:field="*{description}" id="description"
-            placeholder="Description"></textarea>
-
-  <label for="canFly">Can fly: </label>
-  <input type="checkbox" th:field="*{canFly}" th:checked="false" name="createBird.canFly" id="canFly"/>
-  <label for="price">Price: </label>
-  <input type="number" step="0.01" value="1" th:field="*{price}" name="createBird.price" id="price" placeholder="1.0" min="0" >
-  </br>
-    <label for="tagDiv">Bird tags:</label>
-    <div id="tagDiv">
-      <th:block th:each="tag:${birdTags}">
-        <input type="checkbox" th:field="*{birdTags}" th:text="${tag.name}" th:value="${tag.id}">
-      </th:block>
-    </div>
-  </br>
-  <a th:href="@{/addTags}">Add new Tags</a>
-  <button type="submit">Save new Bird</button>
-
-  </form>
-</div>
 
 <!--  Cart table-->
 <h4>Cart:</h4>

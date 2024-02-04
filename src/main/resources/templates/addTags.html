@@ -7,8 +7,8 @@
 </head>
 
 <body>
-<h1>Welcome to bird shop</h1>
-<h3>ADD NEW TAGS NOW:? </h3>
+<h1>Welcome to bird shop ADMIN PAGE</h1>
+<h3>ADD NEW TAGS NOW: </h3>
 <label for="tagDiv">Bird tags:</label>
 <div id="tagDiv">
   <th:block th:each="tag:${birdTags}">
@@ -18,7 +18,7 @@
 <p>   <a th:href="@{/}">Go back to home page</a>
 </p>
 <div style="border: solid 3px cadetblue">
-  <form method="post" th:object="${createTag}" th:action="@{/saveNewTag}">
+  <form method="post" th:object="${createTag}" th:action="@{/admin/saveNewTag}">
     <div th:if="${#fields.hasErrors()}">
       <p th:each="error : ${#fields.allErrors()}" th:text="${error}"></p>
     </div><
