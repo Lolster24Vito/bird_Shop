@@ -3,10 +3,12 @@ package hr.algebra.bird_shop.controller;
 import hr.algebra.bird_shop.domain.Bird;
 import hr.algebra.bird_shop.domain.BirdUser;
 import hr.algebra.bird_shop.domain.Role;
+import hr.algebra.bird_shop.event.UserRegistrationEvent;
 import hr.algebra.bird_shop.repository.RoleRepository;
 import hr.algebra.bird_shop.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,8 @@ public class RegisterController {
     private final RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public RegisterController(UserRepository userRepository,
                               RoleRepository roleRepository) {
@@ -48,6 +52,8 @@ public class RegisterController {
             createBirdUser.setRoles(Collections.singleton(roleUser));
             createBirdUser.setPassword( passwordEncoder.encode(createBirdUser.getPassword()));
             userRepository.save(createBirdUser);
+
+            eventPublisher.publishEvent(new UserRegistrationEvent(this, createBirdUser.getUsername()));
             return "redirect:/";
         }
 

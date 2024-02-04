@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                 )
                 //this whole line and .requestMatchers(toH2Console() is purely  for opening h2Console because by default it's blocked
-               //.csrf(csrf->csrf.disable()).headers(headers->headers.frameOptions(frameOptions->frameOptions.disable()))
+               .csrf(csrf->csrf.disable()).headers(headers->headers.frameOptions(frameOptions->frameOptions.disable()))
                 ;
 
         return http.build();
