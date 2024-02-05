@@ -37,12 +37,16 @@ public class BirdShopController {
         return "home";
     }
     @ModelAttribute
-    public void addAAttributeToModel(Model model, HttpServletRequest request) {
+    public void addAAttributeToModel(Authentication authentication,Model  model, HttpServletRequest request) {
         // Add the cookieCart attribute to the model for every request in this controller
         model.addAttribute("createBird",new Bird());
         model.addAttribute("birds",birdRepository.findAll());
         model.addAttribute("birdTags",birdTagRepository.findAll());
         model.addAttribute("cookieCart",cookieCartUtil.getCookieCart(request));
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Add the authentication object to the model if needed
+            model.addAttribute("authentication", authentication);
+        }
     }
 
 
