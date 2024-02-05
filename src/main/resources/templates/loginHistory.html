@@ -1,16 +1,88 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>Bird shop</title>
   <link rel="stylesheet" th:href="@{/css/table.css}"/>
-
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 
 <body>
-<h1>Only admin should see this page</h1>
 
-<a th:href="@{/}">Want to return to the home?</a>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Bird Shop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/}">Home</a>
+        </li>
+        <!-- if admin block -->
+        <th:block sec:authorize="hasAuthority('ROLE_ADMIN')">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/loginHistory}">Logins information</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/paymentHistory}">Payment history</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/home}">CRUD birds</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/admin/addTags}">CRUD tags</a>
+          </li>
+        </th:block>
+      </ul>
+      <ul class="navbar-nav me-auto">
+
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <!-- if user block -->
+        <th:block th:if="${authentication != null}">
+
+
+          <li class="nav-item" th:if="${authentication != null}">
+            <span class="nav-link" th:text="'User: ' + ${authentication.principal.username}"></span>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              User details
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" th:href="@{/userDetails}">User order history</a></li>
+            </ul>
+          </li>
+          <li class="nav-item" th:if="${authentication != null}">
+            <form th:action="@{/logout}" method="post">
+              <button type="submit" class="btn btn-info">Logout</button>
+            </form>
+          </li>
+        </th:block>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/login}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/register}">Register</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">
+
+<h1 class="text-center">Login history</h1>
+
 
 
 <table>
@@ -35,6 +107,7 @@
   </tbody>
 </table>
 
+</div>
+
 </body>
 </html>
-<!-- end::all[] -->

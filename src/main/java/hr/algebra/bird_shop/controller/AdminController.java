@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,11 +29,15 @@ public class AdminController {
     private final BirdOrderRepository birdOrderRepository;
 
     @ModelAttribute
-    public void addAAttributeToModel(Model model) {
+    public void addAAttributeToModel(Authentication authentication,Model model) {
         // Add the cookieCart attribute to the model for every request in this controller
         model.addAttribute("createBird",new Bird());
         model.addAttribute("birds",birdRepository.findAll());
         model.addAttribute("birdTags",birdTagRepository.findAll());
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Add the authentication object to the model if needed
+            model.addAttribute("authentication", authentication);
+        }
     }
     @GetMapping("/loginHistory")
     public String loginHistory(Model model){
@@ -61,27 +66,10 @@ public class AdminController {
 
         return "paymentHistory";
     }
-    @GetMapping("/addTags")
-    public String addTags(Model model){
-        model.addAttribute("birdTags",birdTagRepository.findAll());
-        model.addAttribute("createTag",new BirdTag());
-        return "addTags";
-    }
-    @PostMapping("/saveNewTag")
-    public String saveNewTag(@Valid @ModelAttribute ("createTag") BirdTag createTag ,
-                             BindingResult bindingResult, Model model ){
-        if(bindingResult.hasErrors()){
-            model.addAttribute("birdTags",birdTagRepository.findAll());
-            return "addTags";
-        }
-        else{
-            birdTagRepository.save(createTag);
-            return "redirect:/admin/addTags";
-        }
 
-    }
     @GetMapping("/home")
-    public String adminHome(Model model){
+    public String adminHome(Authentication authentication, Model model){
+
         return "adminHome";
     }
     private void addHomePageBirdAttributes(Model model){
@@ -100,6 +88,89 @@ public class AdminController {
             return "redirect:/admin/home";
         }
 
+    }
+    @GetMapping("/updateBird/{id}")
+    public String showUpdateBird(@PathVariable("id") long id,Model model) {
+        Bird bird = birdRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid bird Id:" + id));
+
+
+        model.addAttribute("bird", bird);
+        return "editBird";
+    }
+    @PostMapping("/updateBird/{id}")
+    public String updateBird(@PathVariable("id") long id, @Valid Bird bird,
+                             BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            bird.setId(id);
+            return "editBird";
+        }
+
+        birdRepository.save(bird);
+        return "redirect:/admin/home";
+    }
+    @GetMapping("/deleteBird/{id}")
+    public String deleteBird(@PathVariable("id") long id, Model model) {
+        Bird bird = birdRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid bird Id:" + id));
+        birdRepository.delete(bird);
+        return "redirect:/admin/home";
+    }
+
+    //tags
+    @GetMapping("/addTags")
+    public String addTags(Model model){
+        model.addAttribute("birdTags",birdTagRepository.findAll());
+        model.addAttribute("createTag",new BirdTag());
+        return "addTags";
+    }
+
+    @PostMapping("/saveNewTag")
+    public String saveNewTag(@Valid @ModelAttribute ("createTag") BirdTag createTag ,
+                             BindingResult bindingResult, Model model ){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("birdTags",birdTagRepository.findAll());
+            return "addTags";
+        }
+        else{
+            birdTagRepository.save(createTag);
+            return "redirect:/admin/addTags";
+        }
+
+    }
+    @GetMapping("/updateTag/{id}")
+    public String showUpdateTag(@PathVariable("id") long id,Model model) {
+        BirdTag tag = birdTagRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Tag Id:" + id));
+
+
+        model.addAttribute("birdTag", tag);
+        return "editTag";
+    }
+    @PostMapping("/updateTag/{id}")
+    public String updateTag(@PathVariable("id") long id, @Valid BirdTag tag,
+                             BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            tag.setId(id);
+            return "editTag";
+        }
+
+        birdTagRepository.save(tag);
+        return "redirect:/admin/addTags";
+    }
+    @GetMapping("/deleteTag/{id}")
+    public String deleteTag(@PathVariable("id") long id, Model model) {
+        BirdTag tag = birdTagRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid bird Id:" + id));
+        Iterable<Bird> birds=birdRepository.findAll();
+        for (Bird bird:birds){
+            if(bird.getBirdTags().contains(tag)){
+                bird.getBirdTags().remove(tag);
+                birdRepository.save(bird);
+            }
+        }
+        birdTagRepository.delete(tag);
+        return "redirect:/admin/addTags";
     }
 
 }

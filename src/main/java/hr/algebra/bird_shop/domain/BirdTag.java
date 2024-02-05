@@ -20,6 +20,14 @@ public class BirdTag {
     @NotBlank(message = "Bird tag name cannot be empty")
     private String name;
 
+    /*
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "birdUser")
+    private List<BirdOrder> userBirdOrders;
+ */
+   /* @ManyToMany(mappedBy = "birdTags")
+    //@JoinColumn(name = "BIRD_USER_ID")
+    private List<Bird> birds;
+*/
     public BirdTag(String name) {
         this.name = name;
     }
